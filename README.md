@@ -1,4 +1,4 @@
-Este archivo fue modificado para la entrega 1.
+Este archivo fue modificado para la entrega 2 listo para enviar.
 
 # React + TypeScript + Vite
 
