@@ -247,83 +247,231 @@ const categories: Record<
       },
     ],
   },
+  Trailer: {
+  title: 'Trailer de Peliculas Nuevas',
+  description: 'Videos de tráileres disponibles',
+  posts: [
+    {
+      id: 101,
+      titulo: 'Jurassic World',
+      descripcion: 'Tráiler oficial de Jurassic World El Renacer.',
+      src: '/videos/dino.webp', // Asegurate que esta imagen exista también
+      videoSrc: '/videos/RENACER.MP4',
+      read: false,
+    },
+    {
+      id: 102,
+      titulo: 'Predator Badlands',
+      descripcion: 'Tráiler de la nueva entrega de Predator.',
+      src: '/videos/depredador.webp',
+      videoSrc: '/videos/PREDATOR.MP4',
+      read: false,
+    },
+    {
+      id: 103,
+      titulo: 'Humanity’s End',
+      descripcion: 'Serie sci-fi: Humanity’s End – Tráiler.',
+      src: '/videos/huma1.webp',
+      videoSrc: '/videos/HUMANO.MP4',
+      read: false,
+    },
+  ],
+},
 };
-
 function App() {
   const [selectedCategory, setSelectedCategory] = useState('Infantiles');
+  const [searchTerm, setSearchTerm] = useState('');
   const current = categories[selectedCategory];
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+
+  // 🔍 Filtra por búsqueda en cualquier categoría
+  const allPosts = Object.values(categories).flatMap((cat) => cat.posts);
+
+const filteredPosts = searchTerm
+  ? allPosts.filter((post) =>
+      post.titulo.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  : categories[selectedCategory].posts;
+
 
   return (
     <div style={{ fontFamily: 'sans-serif' }}>
       {/* 🔝 Header superior global */}
+      
       <header
         style={{
           textAlign: 'center',
-          padding: '24px 16px',
-          borderBottom: '1px solid #eee',
+          padding: '0',
+          color: 'white',
+          borderBottom: '2px solid #ddd',
+          position: 'relative',
         }}
       >
-        <h1 style={{ fontSize: '32px', margin: 0 }}>
-          🎬 Catálogo de Películas
-        </h1>
-        <p style={{ fontSize: '16px', color: '#555' }}>
-          Explorá nuestras categorías destacadas
-        </p>
+        {/* Fondo separado en su propio div */}
+        <div
+          style={{
+            width: '100%',
+            height: '30vh',
+            minHeight: '180px',
+            backgroundImage: 'url("/videos/zorro.webp")',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            backgroundSize: 'contain',
+            backgroundColor: 'black',
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+          }}
+        >
+          {/* Capa oscura opcional para contraste */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.4)',
+              zIndex: 1,
+            }}
+          />
+          {/* Contenido sobre la imagen */}
+          <div
+            style={{
+              position: 'relative',
+              zIndex: 2,
+              top: '50%',
+              transform: 'translateY(-50%)',
+            }}
+          >
+            <h1 style={{ fontSize: '32px', margin: 0, textShadow: '2px 2px 4px black' }}>
+              🎬 Películas
+            </h1>
+            <p style={{ fontSize: '16px', textShadow: '1px 1px 3px black' }}>
+              Explorá nuestras categorías destacadas
+            </p>
+          </div>
+        </div>
       </header>
 
       {/* 📂 Menú lateral + contenido */}
       <div style={{ display: 'flex', minHeight: '100vh' }}>
         {/* Menú lateral */}
-        <aside
+
+
+    <aside
+      style={{
+        width: '200px',
+        backgroundColor: '#f9f9f9',
+        padding: '16px',
+        borderRight: '1px solid #ddd',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '12px',
+      }}
+    >
+      <h2 style={{ fontSize: '18px', fontWeight: 'bold' }}>Categorías</h2>
+
+      {/* 🔍 Buscador siempre visible */}
+      <input
+        type="text"
+        placeholder="Buscar película..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={{
+          marginBottom: '8px',
+          padding: '8px',
+          borderRadius: '6px',
+          border: '1px solid #ccc',
+          fontSize: '14px',
+        }}
+      />
+
+      {/* Botones de categoría */}
+      {Object.keys(categories).map((cat) => (
+        <button
+          key={cat}
+          onClick={() => setSelectedCategory(cat)}
           style={{
-            width: '200px',
-            backgroundColor: '#f9f9f9',
-            padding: '16px',
-            borderRight: '1px solid #ddd',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
+            padding: '10px',
+            backgroundColor: selectedCategory === cat ? '#007bff' : '#fff',
+            color: selectedCategory === cat ? 'white' : '#333',
+            border: '1px solid #ccc',
+            borderRadius: '6px',
+            textAlign: 'left',
+            cursor: 'pointer',
           }}
         >
-          <h2 style={{ fontSize: '18px', fontWeight: 'bold' }}>Categorías</h2>
-          {Object.keys(categories).map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              style={{
-                padding: '10px',
-                backgroundColor: selectedCategory === cat ? '#007bff' : '#fff',
-                color: selectedCategory === cat ? 'white' : '#333',
-                border: '1px solid #ccc',
-                borderRadius: '6px',
-                textAlign: 'left',
-                cursor: 'pointer',
-              }}
-            >
-              {cat}
-            </button>
-          ))}
-        </aside>
+          {cat}
+        </button>
+      ))}
+    </aside>
 
-        {/* Contenido principal */}
-        <main style={{ flex: 1, padding: '24px' }}>
-          <PostCardContainer
-            title={current.title}
-            description={current.description}
-          >
-            {current.posts.map((post) => (
-              <PostCard
-                key={post.id}
-                title={post.titulo}
-                description={post.descripcion}
-                src={post.src}
-                read={post.read}
-              />
-            ))}
-          </PostCardContainer>
-        </main>
-      </div>
+{/* Contenido principal */}
+<main style={{ flex: 1, padding: '24px' }}>
+
+  <PostCardContainer
+  title={searchTerm ? 'Resultados de búsqueda' : current.title}
+  description={
+    searchTerm
+      ? 'Películas encontradas en todas las categorías'
+      : current.description
+  }
+  isSearching={!!searchTerm} // 👈 importante
+>
+
+    {filteredPosts.map((post) => (
+      <PostCard
+        key={post.id}
+        title={post.titulo}
+        description={post.descripcion}
+        src={post.src}
+        read={post.read}
+        handleClick={() => setSelectedVideo(post.videoSrc || null)} // <-- este es importante
+      />
+    ))}
+  </PostCardContainer>
+
+  {selectedVideo && (
+    <div style={{ padding: '24px', textAlign: 'center' }}>
+      <h3 style={{ fontSize: '20px', marginBottom: '12px' }}>🎬 Reproduciendo Tráiler</h3>
+
+      <video
+        src={selectedVideo}
+        controls
+        autoPlay
+        style={{
+          width: '100%',
+          maxWidth: '640px',
+          height: 'auto',
+          borderRadius: '8px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+        }}
+      />
+
+
+      <br />
+      <button
+        onClick={() => setSelectedVideo(null)}
+        style={{
+          marginTop: '12px',
+          padding: '10px 20px',
+          backgroundColor: '#dc3545',
+          color: 'white',
+          border: 'none',
+          borderRadius: '6px',
+          cursor: 'pointer',
+        }}
+      >
+        Cerrar tráiler
+      </button>
     </div>
+  )}
+</main>
+</div>
+</div>
   );
 }
 

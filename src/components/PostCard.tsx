@@ -19,7 +19,11 @@ function PostCard(props: PostCardProps) {
   }
 
   return (
-    <article className={styles.container}>
+    <article
+      className={styles.container}
+      onClick={props.handleClick}
+      style={{ cursor: props.handleClick ? 'pointer' : 'default' }}
+    >
       <div className={styles.content}>
         <h2 className={styles.title}>{title}</h2>
         <img className={styles.img} src={src} />
@@ -29,6 +33,7 @@ function PostCard(props: PostCardProps) {
         </p>
       </div>
     </article>
+
   );
 }
 
