@@ -1,0 +1,25 @@
+/* Reset y estilos globales */
+@import "tailwindcss/preflight";
+@import "tailwindcss/utilities";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  
+}
+
+
+body {
+  font-family: sans-serif;
+  
+  color: #eee;
+}
+
+a {
+  color: #007bff;
+}
+
+button {
+  font-family: inherit;
+}
